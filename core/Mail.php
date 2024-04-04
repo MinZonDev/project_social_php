@@ -22,15 +22,22 @@ class Mail {
     }
 
     public function sendVerificationEmail($to, $verificationCode) {
+        $verificationLink = 'http://' . $_SERVER['HTTP_HOST'] . '/verify/' . $verificationCode;
+        
+        $body = 'Click the following link to verify your email address: <a href="' . $verificationLink . '">' . $verificationLink . '</a>';
+    
         $transport = (new Swift_SmtpTransport($this->host, $this->port, $this->encryption))
             ->setUsername($this->username)
             ->setPassword($this->password);
         $mailer = new Swift_Mailer($transport);
+        
         $message = (new Swift_Message('Email Verification'))
             ->setFrom([$this->fromEmail => $this->fromName])
             ->setTo([$to])
-            ->setBody('Your verification code is: ' . $verificationCode, 'text/html');
+            ->setBody($body, 'text/html');
+    
         $result = $mailer->send($message);
+        
         return $result;
     }
 }

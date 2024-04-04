@@ -1,4 +1,5 @@
 <?php
+
 class App {
     protected $controller = 'AuthController';
     protected $method = 'register';
@@ -6,8 +7,8 @@ class App {
 
     public function __construct() {
         $url = $this->parseUrl();
-        if ($url !== null && file_exists('../app/controllers/' . $url[0] . '.php')) {
-            $this->controller = $url[0];
+        if ($url !== null && file_exists('../app/controllers/' . ucfirst($url[0]) . '.php')) {
+            $this->controller = ucfirst($url[0]);
             unset($url[0]);
         }
         require_once '../app/controllers/' . $this->controller . '.php';

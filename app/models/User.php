@@ -41,5 +41,33 @@ class User {
             return false;
         }
     }
+
+    public function usernameExists($username) {
+        $this->db->query('SELECT * FROM users WHERE Username = :username');
+        $this->db->bind(':username', $username);
+        $this->db->execute();
+        return $this->db->rowCount() > 0;
+    }
+    
+    public function emailExists($email) {
+        $this->db->query('SELECT * FROM users WHERE Email = :email');
+        $this->db->bind(':email', $email);
+        $this->db->execute();
+        return $this->db->rowCount() > 0;
+    }
+
+    public function verifyUser($verificationCode) {
+        $this->db->query('UPDATE users SET verification_status = 1 WHERE verification_code = :verification_code');
+        $this->db->bind(':verification_code', $verificationCode);
+        $this->db->execute();
+        
+        return $this->db->rowCount() > 0;
+    }
+
+    public function getUserByEmail($email) {
+        $this->db->query('SELECT * FROM users WHERE Email = :email');
+        $this->db->bind(':email', $email);
+        return $this->db->single();
+    }
 }
 ?>

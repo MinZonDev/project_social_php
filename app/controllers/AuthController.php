@@ -1,7 +1,8 @@
 <?php
+session_start();
+
 require_once '../core/Mail.php';
 require_once '../app/models/User.php';
-
 
 class AuthController {
     protected $userModel;
@@ -16,10 +17,14 @@ class AuthController {
                 'username' => trim($_POST['username']),
                 'email' => trim($_POST['email']),
                 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-                'verification_code' => md5(uniqid(rand(), true))
+                'verification_code' => str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT) // Tạo mã xác minh 6 số
             ];
-
-            if ($this->userModel->register($data)) {
+    
+            if ($this->userModel->usernameExists($data['username'])) {
+                echo "Username already exists.";
+            } elseif ($this->userModel->emailExists($data['email'])) {
+                echo "Email already exists.";
+            } elseif ($this->userModel->register($data)) {
                 // Send verification email
                 $to = $data['email'];
                 $verificationCode = $data['verification_code'];
@@ -44,11 +49,20 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = trim($_POST['email']);
             $password = $_POST['password'];
-
+    
             if ($this->userModel->login($email, $password)) {
-                // Login successful
-                // Redirect user to dashboard
-                echo "Login successful. Redirecting to dashboard...";
+                // Check verification status
+                $user = $this->userModel->getUserByEmail($email);
+                if ($user['verification_status'] == 1) {
+                    // Set session and redirect to index.php
+                    $_SESSION['user_id'] = $user['id'];
+                    header('Location: index.php');
+                    exit;
+                } else {
+                    // Account not verified, redirect to verify page
+                    header('Location: verify.php');
+                    exit;
+                }
             } else {
                 // Login failed
                 echo "Invalid email or password.";
@@ -56,6 +70,25 @@ class AuthController {
         } else {
             // Display login form
             require_once '../app/views/auth/login.php';
+        }
+    }
+    
+    public function verify() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $verificationCode = $_POST['verification_code'];
+            
+            // Verify the user using verification code
+            if ($this->userModel->verifyUser($verificationCode)) {
+                // Set verification status and redirect to index.php
+                $_SESSION['verification_status'] = 1;
+                header('Location: index.php');
+                exit;
+            } else {
+                echo "Verification failed. Invalid verification code.";
+            }
+        } else {
+            // Display the verification form
+            require_once '../app/views/auth/verify.php';
         }
     }
 }

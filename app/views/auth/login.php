@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form action="" method="post">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br>
         <label for="password">Password:</label>

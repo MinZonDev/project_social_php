@@ -8,7 +8,7 @@
 <body>
     <h2>Verify Your Account</h2>
     <p>Please enter the verification code sent to your email:</p>
-    <form action="verify.php" method="post">
+    <form action="" method="post">
         <input type="text" name="verification_code" placeholder="Verification Code" required>
         <button type="submit">Verify</button>
     </form>

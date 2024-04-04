@@ -56,11 +56,11 @@ class AuthController {
                 if ($user['verification_status'] == 1) {
                     // Set session and redirect to index.php
                     $_SESSION['user_id'] = $user['id'];
-                    header('Location: index.php');
+                    header('Location: index.php?controller=HomeController&action=index');
                     exit;
                 } else {
                     // Account not verified, redirect to verify page
-                    header('Location: verify.php');
+                    header('Location: index.php?controller=AuthController&action=verify');
                     exit;
                 }
             } else {
@@ -81,7 +81,7 @@ class AuthController {
             if ($this->userModel->verifyUser($verificationCode)) {
                 // Set verification status and redirect to index.php
                 $_SESSION['verification_status'] = 1;
-                header('Location: index.php');
+                header('Location: index.php?controller=HomeController&action=index');
                 exit;
             } else {
                 echo "Verification failed. Invalid verification code.";
@@ -90,6 +90,17 @@ class AuthController {
             // Display the verification form
             require_once '../app/views/auth/verify.php';
         }
+    }
+    public function logout() {
+        // Unset all session variables
+        $_SESSION = [];
+
+        // Destroy the session
+        session_destroy();
+
+        // Redirect to login page after logout
+        header('Location: index.php?controller=AuthController&action=login');
+        exit;
     }
 }
 ?>

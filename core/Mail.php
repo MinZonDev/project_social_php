@@ -22,9 +22,9 @@ class Mail {
     }
 
     public function sendVerificationEmail($to, $verificationCode) {
-        $verificationLink = 'http://' . $_SERVER['HTTP_HOST'] . '/verify/' . $verificationCode;
+        $verificationLink = 'http://localhost/project_social_php/public/index.php?controller=AuthController&action=verify';
         
-        $body = 'Click the following link to verify your email address: <a href="' . $verificationLink . '">' . $verificationLink . '</a>';
+        $body = 'Your Verification Code: ' .$verificationCode . '<br/> Click the following link to verify your email address: <a href="' . $verificationLink . '">' . $verificationLink . '</a>';
     
         $transport = (new Swift_SmtpTransport($this->host, $this->port, $this->encryption))
             ->setUsername($this->username)

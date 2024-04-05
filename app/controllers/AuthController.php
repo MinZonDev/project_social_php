@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once '../core/Mail.php';
 require_once '../app/models/User.php';
@@ -55,7 +54,8 @@ class AuthController {
                 $user = $this->userModel->getUserByEmail($email);
                 if ($user['verification_status'] == 1) {
                     // Set session and redirect to index.php
-                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_id'] = $user['UserID'];
+                    $_SESSION['username'] = $user['Username'];
                     header('Location: index.php?controller=HomeController&action=index');
                     exit;
                 } else {
@@ -72,6 +72,7 @@ class AuthController {
             require_once '../app/views/auth/login.php';
         }
     }
+    
     
     public function verify() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

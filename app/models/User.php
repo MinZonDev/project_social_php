@@ -69,5 +69,23 @@ class User {
         $this->db->bind(':email', $email);
         return $this->db->single();
     }
+
+    public function getUserById($userId) {
+        $this->db->query('SELECT * FROM users WHERE UserID = :user_id');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->single();
+    }
+    public function updateInfo($data) {
+        $this->db->query('UPDATE users SET Username = :username, Email = :email, Bio = :bio, Location = :location, Website = :website WHERE UserID = :user_id');
+        $this->db->bind(':username', $data['username']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':bio', $data['bio']);
+        $this->db->bind(':location', $data['location']);
+        $this->db->bind(':website', $data['website']);
+        $this->db->bind(':user_id', $data['user_id']);
+    
+        return $this->db->execute();
+    }
+    
 }
 ?>

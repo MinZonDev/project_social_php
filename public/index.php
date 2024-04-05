@@ -1,6 +1,6 @@
 <?php
 require_once '../core/App.php';
-
+session_start();
 // Kiểm tra nếu các tham số controller và action được truyền trong URL
 $controller = isset($_GET['controller']) ? ucfirst($_GET['controller']) : 'Auth';
 $action = isset($_GET['action']) ? $_GET['action'] : 'login';

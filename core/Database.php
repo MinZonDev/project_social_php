@@ -71,6 +71,10 @@ class Database
     {
         return $this->stmt->rowCount();
     }
-
+    public function result_set($sql)
+    {
+        $this->query($sql);
+        return $this->resultSet();
+    }
 }
 ?>

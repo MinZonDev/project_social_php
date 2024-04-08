@@ -1,6 +1,6 @@
 <?php
 require_once '../app/models/User.php';
-
+require_once '../app/models/TweetModel.php';
 class ProfileController
 {
     public function show()
@@ -14,8 +14,15 @@ class ProfileController
 
         // Tạo một đối tượng User để truy xuất thông tin của người dùng hiện tại
         $userModel = new User();
-        // Trong ProfileController
         $currentUser = $userModel->getUserById($_SESSION['user_id']);
+
+        // Tạo một đối tượng TweetModel để truy xuất danh sách bài tweet của người dùng
+        $tweetModel = new TweetModel(); // Thay đổi tên class từ Tweet sang TweetModel
+
+        // Lấy danh sách bài tweet của người dùng từ cơ sở dữ liệu
+        $tweets = $tweetModel->getUserTweets($_SESSION['user_id']); // Sử dụng phương thức getUserTweets trong TweetModel
+
+        // Truyền dữ liệu của người dùng và danh sách bài tweet vào view
         $data = [
             'username' => $currentUser['Username'],
             'email' => $currentUser['Email'],
@@ -23,10 +30,11 @@ class ProfileController
             'bio' => $currentUser['Bio'],
             'location' => $currentUser['Location'],
             'website' => $currentUser['Website'],
-            'datejoined' => $currentUser['DateJoined']
+            'datejoined' => $currentUser['DateJoined'],
+            'tweets' => $tweets // Thêm biến $tweets vào mảng $data để truyền vào view
         ];
 
-        // Load view cho trang Profile và truyền dữ liệu của người dùng hiện tại vào view
+        // Load view cho trang Profile và truyền dữ liệu của người dùng và danh sách bài tweet vào view
         require_once '../app/views/profile/index.php';
     }
 

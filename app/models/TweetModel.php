@@ -24,5 +24,10 @@ class TweetModel {
         $query = "SELECT * FROM tweets ORDER BY Timestamp DESC";
         return $this->db->result_set($query);
     }
+    public function getUserTweets($userId) {
+        $this->db->query('SELECT * FROM tweets WHERE UserID = :user_id');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->resultSet(); // Phương thức resultSet() để trả về tất cả các dòng kết quả dưới dạng một mảng
+    }
 }
 ?>

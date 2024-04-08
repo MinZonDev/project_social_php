@@ -92,5 +92,33 @@ class ProfileController
             }
         }
     }
+
+    public function search(){
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
+            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+            header('Location: index.php?controller=AuthController&action=login');
+            exit;
+        }
+        
+            $userModel = new User();
+            while($currentUser = $userModel->searchUsersByUsername($_SESSION['username']))
+            {
+                $data = [
+                    'username' => $currentUser['Username'],
+                    'email' => $currentUser['Email'],
+                    'avatar' => $currentUser['Avatar'],
+                    'bio' => $currentUser['Bio'],
+                    'location' => $currentUser['Location'],
+                    'website' => $currentUser['Website'],
+                    'datejoined' => $currentUser['DateJoined']
+                ];
+            }
+           
+            
+            require_once '../app/views/search/searchUsername.php';
+        
+    }
 }
 ?>

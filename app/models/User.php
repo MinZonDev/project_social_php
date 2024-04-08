@@ -86,6 +86,16 @@ class User {
     
         return $this->db->execute();
     }
+
+    public function searchUsersByUsername($username) {
+        
+        $this->db->query('SELECT * FROM users WHERE Username LIKE :username');
+        $this->db->bind(':username', '%' . $username . '%');
+        $this->db->execute();
+        return $this->db->resultSet();
+       
+    }
+    
     
 }
 ?>

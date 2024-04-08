@@ -1,8 +1,9 @@
     <!-- widgets starts -->
     <div class="widgets">
       <div class="widgets__input">
-        <span class="material-icons widgets__searchIcon"> search </span>
-        <input type="text" placeholder="Search Twitter" />
+        
+          <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=search" class="material-icons widgets__searchIcon"> search </a>
+          <input type="search" placeholder="Search Twitter" name=" "/>
       </div>
 
       <div class="widgets__widgetContainer">

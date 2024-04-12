@@ -5,16 +5,12 @@ class ProfileController
 {
     public function show()
     {
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
-            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             header('Location: index.php?controller=AuthController&action=login');
             exit;
         }
 
-        // Tạo một đối tượng User để truy xuất thông tin của người dùng hiện tại
         $userModel = new User();
-        // Trong ProfileController
         $currentUser = $userModel->getUserById($_SESSION['user_id']);
         $data = [
             'username' => $currentUser['Username'],
@@ -26,24 +22,18 @@ class ProfileController
             'datejoined' => $currentUser['DateJoined']
         ];
 
-        // Load view cho trang Profile và truyền dữ liệu của người dùng hiện tại vào view
         require_once '../app/views/profile/index.php';
     }
 
     public function edit()
     {
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
-            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             header('Location: index.php?controller=AuthController&action=login');
             exit;
         }
 
-        // Tạo một đối tượng User để truy xuất thông tin của người dùng hiện tại
         $userModel = new User();
         $currentUser = $userModel->getUserById($_SESSION['user_id']);
-
-        // Truyền dữ liệu của người dùng hiện tại vào view
         $data = [
             'username' => $currentUser['Username'],
             'email' => $currentUser['Email'],
@@ -54,43 +44,53 @@ class ProfileController
             'datejoined' => $currentUser['DateJoined']
         ];
 
-        // Load view cho trang sửa thông tin người dùng và truyền dữ liệu của người dùng hiện tại vào view
         require_once '../app/views/profile/edit.php';
     }
 
-
     public function update()
     {
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
-            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             header('Location: index.php?controller=AuthController&action=login');
             exit;
         }
 
-        // Xử lý cập nhật thông tin người dùng sau khi submit form
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Lấy dữ liệu từ form
+            $userModel = new User();
+
             $userData = [
                 'user_id' => $_SESSION['user_id'],
                 'username' => trim($_POST['username']),
                 'email' => trim($_POST['email']),
                 'bio' => trim($_POST['bio']),
                 'location' => trim($_POST['location']),
-                'website' => trim($_POST['website'])
+                'website' => trim($_POST['website']),
             ];
 
-            // Gọi hàm updateInfo trong UserModel để cập nhật thông tin người dùng
-            $userModel = new User();
+            // Xử lý upload hình ảnh mới
+            if ($_FILES['avatar']['name']) {
+                $avatarName = $_FILES['avatar']['name'];
+                $avatarTmpName = $_FILES['avatar']['tmp_name'];
+                $avatarSize = $_FILES['avatar']['size'];
+                $avatarError = $_FILES['avatar']['error'];
+
+                if ($avatarError === 0) {
+                    $avatarDestination = '../app/assets/images/' . $avatarName;
+                    move_uploaded_file($avatarTmpName, $avatarDestination);
+                    $userData['avatar'] = $avatarName; // Thêm dòng này để gán tên file vào userData
+                } else {
+                    echo "Upload hình ảnh thất bại.";
+                    exit;
+                }
+            }
+
             if ($userModel->updateInfo($userData)) {
-                // Nếu cập nhật thành công, chuyển hướng về trang Profile
                 header('Location: index.php?controller=ProfileController&action=show');
                 exit;
             } else {
-                // Nếu cập nhật thất bại, hiển thị thông báo lỗi
                 echo "Cập nhật thông tin thất bại.";
             }
         }
     }
+
 }
 ?>

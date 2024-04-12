@@ -7,12 +7,16 @@
 </head>
 <body>
     <h2>Edit Profile</h2>
-    <form action="index.php?controller=ProfileController&action=update" method="POST">
+    <form action="index.php?controller=ProfileController&action=update" method="POST" enctype="multipart/form-data">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" value="<?php echo $data['username']; ?>"><br><br>
 
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" value="<?php echo $data['email']; ?>"><br><br>
+
+        <label for="avatar">Avatar:</label><br>
+        <img src="../assets/images/<?php echo $data['avatar']; ?>" alt="Avatar"><br>
+        <input type="file" id="avatar" name="avatar"><br><br>
 
         <label for="bio">Bio:</label><br>
         <textarea id="bio" name="bio"><?php echo $data['bio']; ?></textarea><br><br>

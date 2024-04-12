@@ -259,28 +259,67 @@ body {
   align-items: center;
 }
 
+/* Thêm CSS cho trang info */
 .profile-section {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
+.profile-section h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.profile-section p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
 .profile-info {
+  width: 100%;
   margin-top: 20px;
 }
 
 .profile-info p {
-  display: flex;
-  align-items: center;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .profile-info p span {
+  font-weight: 700;
   margin-right: 10px;
 }
 
-.edit-button {
-  display: block;
-  margin-top: 20px;
+.profile-info img.avatar {
+  width: 80px; /* Thay đổi kích thước chiều rộng */
+  height: 80px; /* Thay đổi kích thước chiều cao */
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
+
+.edit-button {
+  display: inline-block;
+  background-color: var(--twitter-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #1da1f2;
+}
+
 
 .feed {
   flex: 1;

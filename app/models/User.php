@@ -76,16 +76,18 @@ class User {
         return $this->db->single();
     }
     public function updateInfo($data) {
-        $this->db->query('UPDATE users SET Username = :username, Email = :email, Bio = :bio, Location = :location, Website = :website WHERE UserID = :user_id');
+        $this->db->query('UPDATE users SET Username = :username, Email = :email, Bio = :bio, Location = :location, Website = :website, Avatar = :avatar WHERE UserID = :user_id');
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':bio', $data['bio']);
         $this->db->bind(':location', $data['location']);
         $this->db->bind(':website', $data['website']);
+        $this->db->bind(':avatar', $data['avatar']); // Thêm bind dữ liệu cho cột Avatar
         $this->db->bind(':user_id', $data['user_id']);
-    
+        
         return $this->db->execute();
     }
+    
     
 }
 ?>

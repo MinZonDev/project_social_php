@@ -1,9 +1,9 @@
 <?php
 class Database
 {
-    private $host = 'localhost';
-    private $user = 'root';
-    private $pass = '';
+    private $host = 'chirp-social-minzondev.b.aivencloud.com:28999';
+    private $user = 'avnadmin';
+    private $pass = 'AVNS_hUaIHWb2H3eQt_qspQG';
     private $dbname = 'chirp_social';
 
     private $dbh;

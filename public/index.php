@@ -1,24 +1,30 @@
 <?php
 require_once '../core/App.php';
 session_start();
+
 // Kiểm tra nếu các tham số controller và action được truyền trong URL
-$controller = isset($_GET['controller']) ? ucfirst($_GET['controller']) : 'Auth';
+$controllerName = isset($_GET['controller']) ? ucfirst($_GET['controller']) : 'Auth';
 $action = isset($_GET['action']) ? $_GET['action'] : 'login';
 
 // Kiểm tra xem tên file controller có tồn tại không
-if (file_exists('../app/controllers/' . $controller . '.php')) {
-    require_once '../app/controllers/' . $controller . '.php';
+if (file_exists('../app/controllers/' . $controllerName . '.php')) {
+    require_once '../app/controllers/' . $controllerName . '.php';
 
     // Tạo đối tượng controller và gọi hàm action tương ứng
-    $controller = new $controller;
-    if (method_exists($controller, $action)) {
-        $controller->$action();
+    $controller = new $controllerName;
+
+    if ($action === 'showByUsername' && isset($_GET['username'])) {
+        $username = $_GET['username'];
+        $controller->$action($username);
+    } elseif ($action === 'follow' && isset($_GET['userId'])) {
+        $userId = $_GET['userId'];
+        $controller->$action($userId);
     } else {
-        // Xử lý hành động không tồn tại
-        echo "Action $action not found in controller $controller";
+        // Gọi hàm action mặc định nếu không có tham số đặc biệt
+        $controller->$action();
     }
 } else {
     // Xử lý controller không tồn tại
-    echo "Controller $controller not found";
+    echo "Controller $controllerName not found";
 }
 ?>

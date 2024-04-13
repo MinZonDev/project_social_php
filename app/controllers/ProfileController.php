@@ -1,6 +1,6 @@
 <?php
 require_once '../app/models/User.php';
-
+require_once '../app/models/Tweet.php';
 class ProfileController
 {
     public function show()
@@ -91,6 +91,100 @@ class ProfileController
             }
         }
     }
+
+    public function showByUsername($username)
+    {
+        $userModel = new User();
+        $user = $userModel->getUserByUsername($username);
+
+        if ($user) {
+            // Kiểm tra nếu người dùng đang truy cập trang profile của chính họ
+            $isCurrentUser = isset($_SESSION['username']) && $user['Username'] === $_SESSION['username'];
+
+            // Lấy danh sách bài viết của người dùng
+            $tweetModel = new Tweet();
+            $tweets = $tweetModel->getTweetsByUserId($user['UserID']);
+
+            // Kiểm tra xem người dùng hiện tại đã follow người dùng được truy cập hay không
+            $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+            $isFollowing = $user_id ? $userModel->isFollowing($user_id, $user['UserID']) : false;
+
+            // Lấy số lượng người đang theo dõi và đã theo dõi
+            $followersCount = $userModel->countFollowers($user['UserID']);
+            $followingCount = $userModel->countFollowing($user['UserID']);
+
+            $data = [
+                'username' => $user['Username'],
+                'email' => $user['Email'],
+                'avatar' => $user['Avatar'],
+                'bio' => $user['Bio'],
+                'location' => $user['Location'],
+                'website' => $user['Website'],
+                'datejoined' => $user['DateJoined'],
+                'is_current_user' => $isCurrentUser,
+                'tweets' => $tweets,
+                'is_following' => $isFollowing,
+                'followers_count' => $followersCount,
+                'following_count' => $followingCount
+            ];
+
+            // Load view and pass data to it
+            require_once '../app/views/profile/index.php';
+        } else {
+            // Xử lý trường hợp không tìm thấy người dùng
+            echo "User not found";
+        }
+    }
+
+    public function follow($userId)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            // Redirect to login page if user is not logged in
+            header('Location: index.php?controller=AuthController&action=login');
+            exit;
+        }
+
+        // Assuming you have a method in your User model to add a follow relationship
+        $userModel = new User();
+        $result = $userModel->followUser($_SESSION['user_id'], $userId);
+
+        // Check if follow operation was successful
+        if ($result) {
+            // Redirect back to the user profile page or wherever appropriate
+            header("Location: index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}");
+            exit;
+        } else {
+            // Handle error if follow operation failed
+            echo "Failed to follow user.";
+        }
+    }
+
+    public function unfollow($userId)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            // Redirect to login page if user is not logged in
+            header('Location: index.php?controller=AuthController&action=login');
+            exit;
+        }
+
+        // Assuming you have a method in your User model to remove a follow relationship
+        $userModel = new User();
+        $result = $userModel->unfollowUser($_SESSION['user_id'], $userId);
+
+        // Check if unfollow operation was successful
+        if ($result) {
+            // Redirect back to the user profile page or wherever appropriate
+            header("Location: index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}");
+            exit;
+        } else {
+            // Handle error if unfollow operation failed
+            echo "Failed to unfollow user.";
+        }
+    }
+
+
+
+
 
 }
 ?>

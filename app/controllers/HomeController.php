@@ -1,5 +1,7 @@
 <?php
 
+require_once '../app/models/Tweet.php';
+
 class HomeController {
     
     public function index() {
@@ -10,7 +12,11 @@ class HomeController {
             exit;
         }
 
-        // Load view for homepage
+        // Tạo một đối tượng Tweet để lấy danh sách bài viết
+        $tweetModel = new Tweet();
+        $tweets = $tweetModel->getTweets();
+
+        // Load view for homepage và truyền danh sách bài viết vào
         require_once '../app/views/home/index.php';
     }
     

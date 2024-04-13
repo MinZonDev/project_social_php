@@ -1,5 +1,5 @@
     <!-- widgets starts -->
-    <div class="widgets">
+    <!-- <div class="widgets">
       <div class="widgets__input">
         <span class="material-icons widgets__searchIcon"> search </span>
         <input type="text" placeholder="Search Twitter" />
@@ -26,7 +26,7 @@
         </blockquote>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
-    </div>
+    </div> -->
     <!-- widgets ends -->
   </body>
 </html>

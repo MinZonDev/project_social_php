@@ -85,11 +85,13 @@ class User
         return $this->db->single();
     }
     public function getUserByUsername($username)
-    {
-        $this->db->query('SELECT * FROM users WHERE Username = :username');
-        $this->db->bind(':username', $username);
-        return $this->db->single();
-    }
+{
+    $this->db->query('SELECT * FROM users WHERE Username = :username');
+    $this->db->bind(':username', $username);
+    $user = $this->db->single();
+    return $user; // Trả về dữ liệu người dùng hoặc null nếu không tìm thấy
+}
+
     public function updateInfo($data)
     {
         $this->db->query('UPDATE users SET Username = :username, Email = :email, Bio = :bio, Location = :location, Website = :website, Avatar = :avatar WHERE UserID = :user_id');

@@ -10,7 +10,6 @@ class TweetController
                 $userId = $_SESSION['user_id'];
                 $content = trim($_POST['content']);
 
-                // Xử lý tải lên hình ảnh
                 $imagePath = '';
                 if ($_FILES['image']['size'] > 0) {
                     $imagePath = $this->uploadImage($_FILES['image']);
@@ -19,17 +18,12 @@ class TweetController
                 $tweetModel = new Tweet();
                 $tweetModel->addTweetWithImage($userId, $content, $imagePath);
 
-                // Redirect or do something else after adding the tweet
                 header('Location: index.php?controller=TweetController&action=show');
                 exit;
             } else {
-                // Handle case when user is not logged in
-                // Redirect to login page or show an error message
                 echo "Please log in to add a tweet.";
             }
         } else {
-            // Handle case when request method is not POST
-            // Redirect to an appropriate page or show an error message
             echo "Invalid request method.";
         }
     }
@@ -81,14 +75,38 @@ class TweetController
         }
     }
 
-
     public function show()
     {
         $tweetModel = new Tweet();
         $tweets = $tweetModel->getAllTweets();
 
-        // Load view and pass tweets data to it
         require_once '../app/views/tweet/index.php';
+    }
+
+    public function likeTweet()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tweet_id'])) {
+            if (isset($_SESSION['user_id'])) {
+                $userId = $_SESSION['user_id'];
+                $tweetId = $_POST['tweet_id'];
+
+                $tweetModel = new Tweet();
+                $tweetModel->likeTweet($tweetId, $userId);
+            }
+        }
+    }
+
+    public function unlikeTweet()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tweet_id'])) {
+            if (isset($_SESSION['user_id'])) {
+                $userId = $_SESSION['user_id'];
+                $tweetId = $_POST['tweet_id'];
+
+                $tweetModel = new Tweet();
+                $tweetModel->unlikeTweet($tweetId, $userId);
+            }
+        }
     }
 }
 ?>

@@ -7,36 +7,81 @@
         <form action="index.php?controller=TweetController&action=add" method="POST" enctype="multipart/form-data">
             <textarea name="content" rows="4" cols="50" placeholder="What's on your mind?"></textarea>
             <br>
-            <input type="file" name="image"> <!-- Trường input cho phép chọn hình ảnh -->
+            <input type="file" name="image">
             <br>
             <input type="submit" value="Post">
         </form>
 
         <!-- Display tweets -->
-        <?php foreach ($tweets as $tweet): ?>
-            <div class="tweet">
-                <div class="tweet-content">
-                    <p><?php echo $tweet['Content']; ?></p>
-                    <div style="display: flex; justify-content: space-between;">
-                        <p>Posted by: <?php echo $tweet['Username']; ?></p>
-                        <p style="margin-right: 0;">Posted at: <?php echo $tweet['Timestamp']; ?></p>
+        <?php if (!empty($tweets)): ?>
+            <?php foreach ($tweets as $tweet): ?>
+                <div class="post">
+                    <div class="post__avatar">
+                        <img src="../app/assets/images/<?php echo isset($tweet['Avatar']) ? $tweet['Avatar'] : 'avatar.jpg'; ?>"
+                            alt="" />
                     </div>
-                </div>
-                <?php if ($tweet['ImageURL']): ?>
-                    <div class="tweet-image">
-                        <img style="width: 150px;" src="../app/assets/images/<?php echo $tweet['ImageURL']; ?>" alt="Tweet Image"> <!-- Thay đổi đường dẫn tới thư mục lưu trữ ảnh -->
-                    </div>
-                <?php endif; ?>
 
-                <!-- Thêm nút yêu thích, retweet, comment -->
-                <div class="tweet-actions">
-                    <button class="action-button like-button">Like</button>
-                    <button class="action-button retweet-button">Retweet</button>
-                    <button class="action-button comment-button">Comment</button>
+                    <div class="post__body">
+                        <div class="post__header">
+                            <div class="post__headerText">
+                                <h3>
+                                    <?php echo isset($tweet['Username']) ? $tweet['Username'] : ''; ?>
+                                </h3>
+                            </div>
+                            <div class="post__date">
+                                <p><?php echo isset($tweet['Timestamp']) ? $tweet['Timestamp'] : ''; ?></p>
+                            </div>
+                        </div>
+                        <div class="post__headerDescription">
+                            <p><?php echo isset($tweet['Content']) ? $tweet['Content'] : ''; ?></p>
+                        </div>
+                        <img src="../app/assets/images/<?php echo isset($tweet['ImageURL']) ? $tweet['ImageURL'] : ''; ?>"
+                            alt="" />
+                        <div class="post__footer">
+                            <span class="material-icons"> repeat </span>
+                            <?php if ($tweetModel->isTweetLiked($tweet['TweetID'], $_SESSION['user_id'])): ?>
+                                <button class="material-icons" onclick="unlikeTweet(<?php echo $tweet['TweetID']; ?>)"> favorite </button>
+                            <?php else: ?>
+                                <button class="material-icons" onclick="likeTweet(<?php echo $tweet['TweetID']; ?>)"> favorite_border </button>
+                            <?php endif; ?>
+                            <span class="material-icons"> publish </span>
+                            <span id="likeCount-<?php echo $tweet['TweetID']; ?>"><?php echo $tweet['LikeCount']; ?> Likes</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No posts found.</p>
+        <?php endif; ?>
     </div>
 </div>
+
+<script>
+    function likeTweet(tweetId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'index.php?controller=TweetController&action=likeTweet', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                var likeCountElement = document.getElementById('likeCount-' + tweetId);
+                likeCountElement.textContent = xhr.responseText + ' Likes';
+            }
+        };
+        xhr.send('tweet_id=' + tweetId);
+    }
+
+    function unlikeTweet(tweetId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'index.php?controller=TweetController&action=unlikeTweet', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                var likeCountElement = document.getElementById('likeCount-' + tweetId);
+                likeCountElement.textContent = xhr.responseText + ' Likes';
+            }
+        };
+        xhr.send('tweet_id=' + tweetId);
+    }
+</script>
 
 <?php include '../app/assets/layout/footer.php'; ?>

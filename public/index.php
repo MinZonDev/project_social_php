@@ -13,13 +13,19 @@ if (file_exists('../app/controllers/' . $controllerName . '.php')) {
     // Tạo đối tượng controller và gọi hàm action tương ứng
     $controller = new $controllerName;
 
+    // Kiểm tra nếu action là showByUsername và có tham số username được truyền
     if ($action === 'showByUsername' && isset($_GET['username'])) {
         $username = $_GET['username'];
         $controller->$action($username);
-    } elseif ($action === 'follow' && isset($_GET['userId'])) {
+    } 
+    // Kiểm tra nếu action là follow hoặc unfollow và có tham số userId được truyền
+    elseif (($action === 'follow' || $action === 'unfollow') && isset($_GET['userId'])) {
         $userId = $_GET['userId'];
+        // Gọi hàm tương ứng với action
         $controller->$action($userId);
-    } else {
+    } 
+    // Xử lý các trường hợp còn lại
+    else {
         // Gọi hàm action mặc định nếu không có tham số đặc biệt
         $controller->$action();
     }

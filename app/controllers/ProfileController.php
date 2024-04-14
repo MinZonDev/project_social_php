@@ -161,12 +161,14 @@ class ProfileController
 
         // Check if follow operation was successful
         if ($result) {
+            // Display success message
+            echo "<script>alert('Followed user successfully!');</script>";
             // Redirect back to the user profile page or wherever appropriate
-            header("Location: index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}");
+            echo "<script>window.location.href = 'index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}';</script>";
             exit;
         } else {
             // Handle error if follow operation failed
-            echo "Failed to follow user.";
+            echo "<script>alert('Failed to follow user.');</script>";
         }
     }
 
@@ -178,24 +180,33 @@ class ProfileController
             exit;
         }
 
+        // Check if confirmation is needed for unfollowing
+        if (!isset($_GET['confirm']) || $_GET['confirm'] !== 'true') {
+            // Display confirmation message
+            echo "<script>
+                    var result = confirm('Are you sure unfollow this user?');
+                    if (result) {
+                        window.location.href = 'index.php?controller=ProfileController&action=unfollow&userId={$userId}&confirm=true';
+                    }
+                </script>";
+            exit;
+        }
+
         // Assuming you have a method in your User model to remove a follow relationship
         $userModel = new User();
         $result = $userModel->unfollowUser($_SESSION['user_id'], $userId);
 
         // Check if unfollow operation was successful
         if ($result) {
+            // Display success message
+            echo "<script>alert('Unfollowed user successfully!');</script>";
             // Redirect back to the user profile page or wherever appropriate
-            header("Location: index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}");
+            echo "<script>window.location.href = 'index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}';</script>";
             exit;
         } else {
             // Handle error if unfollow operation failed
-            echo "Failed to unfollow user.";
+            echo "<script>alert('Failed to unfollow user.');</script>";
         }
     }
-
-
-
-
-
 }
 ?>

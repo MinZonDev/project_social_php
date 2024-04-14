@@ -519,7 +519,7 @@
     </div>
 
     <div class="sidebarOption">
-      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=minzon"
+      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=<?php echo $_SESSION['username']?>"
         class="sidebarLink">
         <span class="material-icons"> perm_identity </span>
         <h2>Profile</h2>
@@ -529,12 +529,12 @@
 
 
     <div class="sidebarOption">
-      <a href="http://localhost/project_social_php/public/index.php?controller=TweetController&action=show"
+      <a href="http://localhost/project_social_php/public/index.php?controller=AuthController&action=logout"
         class="sidebarLink">
-        <span class="material-icons"> more_horiz </span>
-        <h2>More</h2>
+        <span class="material-icons"> logout </span>
+        <h2>Logout</h2>
       </a>
     </div>
-    <button class="sidebar__tweet">Tweet</button>
+    <a href="http://localhost/project_social_php/public/index.php?controller=TweetController&action=show"><button class="sidebar__tweet">Tweet</button></a>
   </div>
   <!-- sidebar ends -->

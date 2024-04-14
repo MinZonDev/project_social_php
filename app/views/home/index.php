@@ -12,7 +12,8 @@
         <!-- post starts -->
         <div class="post">
           <div class="post__avatar">
-            <img src="../app/assets/images/<?php echo isset($tweet['Avatar']) ? $tweet['Avatar'] : 'avatar.jpg'; ?>" alt="" />
+            <img src="../app/assets/images/<?php echo isset($tweet['Avatar']) ? $tweet['Avatar'] : 'avatar.jpg'; ?>"
+              alt="" />
           </div>
 
           <div class="post__body">
@@ -33,10 +34,24 @@
             </div>
             <img src="../app/assets/images/<?php echo isset($tweet['ImageURL']) ? $tweet['ImageURL'] : ''; ?>" alt="" />
             <div class="post__footer">
-              <span class="material-icons"> repeat </span>
-              <span class="material-icons"> favorite_border </span>
-              <span class="material-icons"> publish </span>
+              <button onclick="likeTweet(<?php echo $tweet['TweetID']; ?>)">
+                <span class="material-icons"> favorite_border </span>
+              </button>
+              <button>
+                <span class="material-icons"> repeat </span>
+              </button>
+              <button>
+                <span class="material-icons"> publish </span>
+              </button>
             </div>
+            <?php if (isset($tweet['LikeCount'])): ?>
+              <p id="likeCount-<?php echo $tweet['TweetID']; ?>">
+                <?php echo $tweet['LikeCount']; ?> Likes <?php echo $tweet['RetweetCount']; ?> Retweets
+              </p>
+            <?php endif; ?>
+            <?php if (isset($tweet['CommentCount'])): ?>
+              <p><?php echo $tweet['CommentCount']; ?> Comments</p>
+            <?php endif; ?>
           </div>
         </div>
         <!-- post ends -->
@@ -47,6 +62,24 @@
     <?php endif; ?>
   </div>
   <!-- feed ends -->
+
 </div>
 
 <?php include '../app/assets/layout/footer.php'; ?>
+
+<script>
+  function likeTweet(tweetId) {
+    // Gửi yêu cầu Ajax để thực hiện like bài viết
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'app/views/home/like_tweet.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        // Cập nhật số lượng lượt thích trên giao diện người dùng
+        var likeCountElement = document.getElementById('likeCount-' + tweetId);
+        likeCountElement.textContent = xhr.responseText + ' Likes';
+      }
+    };
+    xhr.send('tweet_id=' + tweetId);
+  }
+</script>

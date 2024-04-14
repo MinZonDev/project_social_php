@@ -12,6 +12,9 @@ class ProfileController
 
         $userModel = new User();
         $currentUser = $userModel->getUserById($_SESSION['user_id']);
+        $tweetModel = new Tweet();
+
+        // Lấy thông tin người dùng hiện tại
         $data = [
             'username' => $currentUser['Username'],
             'email' => $currentUser['Email'],
@@ -22,8 +25,16 @@ class ProfileController
             'datejoined' => $currentUser['DateJoined']
         ];
 
+        // Lấy danh sách bài viết của người dùng hiện tại
+        $tweets = $tweetModel->getTweetsByUserId($_SESSION['user_id']);
+
+        // Thêm danh sách bài viết vào dữ liệu
+        $data['tweets'] = $tweets;
+
+        // Load view và truyền dữ liệu vào đó
         require_once '../app/views/profile/index.php';
     }
+
 
     public function edit()
     {

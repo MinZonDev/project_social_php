@@ -13,6 +13,7 @@
             <?php foreach ($data['users'] as $user): ?>
                 <li>
                     <a href="index.php?controller=ProfileController&action=showByUsername&username=<?php echo $user['Username']; ?>">
+                        <img src="../app/assets/images/<?php echo $user['Avatar']; ?>" class="user-avatar" alt="User Avatar">
                         <?php echo $user['Username']; ?>
                     </a>
                 </li>

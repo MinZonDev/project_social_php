@@ -284,6 +284,7 @@
 
     .container {
       display: flex;
+      width: 50%;
       flex-direction: column;
       align-items: center;
     }
@@ -319,6 +320,157 @@
       overflow-y: auto;
       padding: 20px;
     }
+
+    /* CSS cho các tweet */
+    .tweet {
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .tweet-content {
+      margin-bottom: 10px;
+    }
+
+    .tweet-image img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .tweet-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .action-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .like-button {
+      background-color: #28a745;
+    }
+
+    .retweet-button {
+      background-color: #17a2b8;
+    }
+
+    .comment-button {
+      background-color: #ffc107;
+    }
+
+    /* CSS cho khung đăng bài viết */
+    .tweet-section {
+      background-color: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .tweet-section textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .tweet-section input[type="file"] {
+      margin-bottom: 10px;
+    }
+
+    .tweet-section input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .tweet-section input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    /* CSS cho khung tìm kiếm và kết quả */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1,
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    ul li a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .no-users-found {
+      color: #ff0000;
+      font-style: italic;
+    }
+    
   </style>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -367,7 +519,7 @@
     </div>
 
     <div class="sidebarOption">
-      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=<?php echo $current_username; ?>"
+      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=minzon"
         class="sidebarLink">
         <span class="material-icons"> perm_identity </span>
         <h2>Profile</h2>

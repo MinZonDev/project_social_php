@@ -70,5 +70,19 @@ class Tweet
 
         return $this->db->rowCount() > 0;
     }
+    public function getTweets() {
+        $this->db->query('SELECT tweets.*, users.Username, users.Avatar FROM tweets JOIN users ON tweets.UserID = users.UserID ORDER BY tweets.Timestamp DESC');
+        return $this->db->resultSet();
+    }
+    public function getTweetsByUserId($userId) {
+        $this->db->query('SELECT tweets.*, users.Username, users.Avatar 
+                          FROM tweets 
+                          JOIN users ON tweets.UserID = users.UserID 
+                          WHERE tweets.UserID = :user_id 
+                          ORDER BY tweets.Timestamp DESC');
+        $this->db->bind(':user_id', $userId);
+        return $this->db->resultSet();
+    }
+    
 }
 ?>

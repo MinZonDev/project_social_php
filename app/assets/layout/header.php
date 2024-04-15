@@ -470,7 +470,53 @@
       color: #ff0000;
       font-style: italic;
     }
-    
+
+    .edit-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 50px;
+    }
+
+    .edit-form {
+      width: 50%;
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .edit-form label {
+      font-weight: bold;
+    }
+
+    .edit-form input[type="text"],
+    .edit-form input[type="email"],
+    .edit-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .edit-form input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .edit-form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
   </style>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -519,7 +565,7 @@
     </div>
 
     <div class="sidebarOption">
-      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=<?php echo $_SESSION['username']?>"
+      <a href="http://localhost/project_social_php/public/index.php?controller=ProfileController&action=showByUsername&username=<?php echo $_SESSION['username'] ?>"
         class="sidebarLink">
         <span class="material-icons"> perm_identity </span>
         <h2>Profile</h2>
@@ -535,6 +581,7 @@
         <h2>Logout</h2>
       </a>
     </div>
-    <a href="http://localhost/project_social_php/public/index.php?controller=TweetController&action=show"><button class="sidebar__tweet">Tweet</button></a>
+    <a href="http://localhost/project_social_php/public/index.php?controller=TweetController&action=show"><button
+        class="sidebar__tweet">Tweet</button></a>
   </div>
   <!-- sidebar ends -->

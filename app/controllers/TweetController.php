@@ -108,5 +108,49 @@ class TweetController
             }
         }
     }
+
+    public function deleteTweet()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tweet_id'])) {
+            if (isset($_SESSION['user_id'])) {
+                $userId = $_SESSION['user_id'];
+                $tweetId = $_POST['tweet_id'];
+
+                $tweetModel = new Tweet();
+                $tweet = $tweetModel->getTweetById($tweetId);
+
+                if ($tweet && $tweet['UserID'] == $userId) {
+                    // Kiểm tra xem bài viết có lượt like hay không
+                    $likesCount = $tweetModel->getLikesCount($tweetId);
+                    if ($likesCount > 0) {
+                        // Nếu có lượt like, xóa trước các like của bài viết
+                        $tweetModel->deleteLikes($tweetId);
+                    }
+                    // Tiến hành xóa bài viết
+                    $tweetModel->deleteTweet($tweetId);
+                }
+            }
+        }
+    }
+
+    public function editTweet()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tweet_id'])) {
+            if (isset($_SESSION['user_id'])) {
+                $userId = $_SESSION['user_id'];
+                $tweetId = $_POST['tweet_id'];
+                $content = trim($_POST['content']);
+
+                $tweetModel = new Tweet();
+                $tweet = $tweetModel->getTweetById($tweetId);
+
+                if ($tweet && $tweet['UserID'] == $userId) {
+                    // Tiến hành chỉnh sửa thông tin bài viết
+                    $tweetModel->editTweet($tweetId, $content);
+                }
+            }
+        }
+    }
+
 }
 ?>

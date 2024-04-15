@@ -13,7 +13,7 @@ class HomeController {
 
         // Tạo một đối tượng Tweet để lấy danh sách bài viết
         $tweetModel = new Tweet();
-        $tweets = $tweetModel->getTweets();
+        $tweets = $tweetModel->getAllTweets();
 
         // Load view for homepage và truyền danh sách bài viết vào
         require_once '../app/views/home/index.php';

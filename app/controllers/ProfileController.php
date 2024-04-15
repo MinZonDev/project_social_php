@@ -1,6 +1,7 @@
 <?php
 require_once '../app/models/User.php';
 require_once '../app/models/Tweet.php';
+
 class ProfileController
 {
     public function show()
@@ -34,7 +35,6 @@ class ProfileController
         // Load view và truyền dữ liệu vào đó
         require_once '../app/views/profile/index.php';
     }
-
 
     public function edit()
     {
@@ -95,7 +95,7 @@ class ProfileController
             }
 
             if ($userModel->updateInfo($userData)) {
-                header('Location: index.php?controller=ProfileController&action=show');
+                echo "<script>window.location.href = 'index.php?controller=ProfileController&action=showByUsername&username={$_SESSION['username']}';</script>";
                 exit;
             } else {
                 echo "Cập nhật thông tin thất bại.";

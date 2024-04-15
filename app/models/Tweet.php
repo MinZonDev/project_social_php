@@ -70,11 +70,20 @@ class Tweet
 
         return $this->db->rowCount() > 0;
     }
-    public function getTweets() {
+    public function getTweets()
+    {
         $this->db->query('SELECT tweets.*, users.Username, users.Avatar FROM tweets JOIN users ON tweets.UserID = users.UserID ORDER BY tweets.Timestamp DESC');
         return $this->db->resultSet();
     }
-    public function getTweetsByUserId($userId) {
+    public function getTweetById($tweetId)
+    {
+        $this->db->query('SELECT * FROM tweets WHERE TweetID = :tweet_id');
+        $this->db->bind(':tweet_id', $tweetId);
+        return $this->db->single();
+    }
+
+    public function getTweetsByUserId($userId)
+    {
         $this->db->query('SELECT tweets.*, users.Username, users.Avatar 
                           FROM tweets 
                           JOIN users ON tweets.UserID = users.UserID 
@@ -83,6 +92,49 @@ class Tweet
         $this->db->bind(':user_id', $userId);
         return $this->db->resultSet();
     }
-    
+    public function deleteTweet($tweetId)
+    {
+        // Kiểm tra xem bài viết có lượt like hay không
+        $likeCount = $this->getLikesCount($tweetId);
+        if ($likeCount > 0) {
+            // Nếu có lượt like, không thực hiện xóa và trả về false để thông báo cho người dùng
+            return false;
+        }
+
+        // Nếu không có lượt like, tiến hành xóa bài viết
+        $this->deleteLikes($tweetId); // Xóa tất cả các like liên quan đến bài viết
+        $this->db->query('DELETE FROM tweets WHERE TweetID = :tweet_id');
+        $this->db->bind(':tweet_id', $tweetId);
+        $this->db->execute();
+
+        // Trả về true để thông báo cho người dùng rằng bài viết đã được xóa thành công
+        return true;
+    }
+
+
+    public function editTweet($tweetId, $content)
+    {
+        $this->db->query('UPDATE tweets SET Content = :content WHERE TweetID = :tweet_id');
+        $this->db->bind(':content', $content);
+        $this->db->bind(':tweet_id', $tweetId);
+        $this->db->execute();
+    }
+    public function getLikesCount($tweetId)
+    {
+        $this->db->query('SELECT COUNT(*) as likes_count FROM likes WHERE TweetID = :tweet_id');
+        $this->db->bind(':tweet_id', $tweetId);
+        $row = $this->db->single();
+        return $row ? $row['likes_count'] : 0;
+    }
+
+    public function deleteLikes($tweetId)
+    {
+        $this->db->query('DELETE FROM likes WHERE TweetID = :tweet_id');
+        $this->db->bind(':tweet_id', $tweetId);
+        $this->db->execute();
+    }
+
+
+
 }
 ?>

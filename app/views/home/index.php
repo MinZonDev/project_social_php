@@ -73,15 +73,17 @@
 
             <!-- Display comments -->
             <div id="comments-<?php echo $tweet['TweetID']; ?>">
+               
               <?php if (isset($tweet['Comments']) && is_array($tweet['Comments']) && !empty($tweet['Comments'])): ?>
+                
                 <?php foreach ($tweet['Comments'] as $comment): ?>
                   <div class="comment">
                     <div class="comment__header">
-                      <span class="comment__username"><?php echo $comment['Username']; ?></span>
-                      <span class="comment__timestamp"><?php echo $comment['Timestamp']; ?></span>
+                      <p class="comment__username"><?php echo isset($comment['Username']) ? $comment['Username'] : ''; ?></p>
+                      <p class="comment__timestamp"><?php echo isset($comment['Timestamp']) ? $comment['Timestamp'] : ''; ?></p>
                     </div>
                     <div class="comment__content">
-                      <p><?php echo $comment['Content']; ?></p>
+                      <p><?php echo isset($comment['Content']) ? $comment['Content'] : '';?></p>
                     </div>
                   </div>
                 <?php endforeach; ?>

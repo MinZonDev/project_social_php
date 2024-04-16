@@ -46,7 +46,7 @@ class ProfileController
         $userModel = new User();
         $currentUser = $userModel->getUserById($_SESSION['user_id']);
         $data = [
-            'username' => $currentUser['Username'],
+            
             'email' => $currentUser['Email'],
             'avatar' => $currentUser['Avatar'],
             'bio' => $currentUser['Bio'],
@@ -70,7 +70,7 @@ class ProfileController
 
             $userData = [
                 'user_id' => $_SESSION['user_id'],
-                'username' => trim($_POST['username']),
+                
                 'email' => trim($_POST['email']),
                 'bio' => trim($_POST['bio']),
                 'location' => trim($_POST['location']),

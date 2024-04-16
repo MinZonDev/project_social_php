@@ -94,8 +94,8 @@ class User
 
     public function updateInfo($data)
     {
-        $this->db->query('UPDATE users SET Username = :username, Email = :email, Bio = :bio, Location = :location, Website = :website, Avatar = :avatar WHERE UserID = :user_id');
-        $this->db->bind(':username', $data['username']);
+        $this->db->query('UPDATE users SET  Email = :email, Bio = :bio, Location = :location, Website = :website, Avatar = :avatar WHERE UserID = :user_id');
+        
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':bio', $data['bio']);
         $this->db->bind(':location', $data['location']);

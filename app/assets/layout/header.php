@@ -527,7 +527,7 @@
 <body>
   <!-- sidebar starts -->
   <div class="sidebar">
-    <i class="fab fa-twitter"></i>
+    <img href="app/assets/images/logo_chirp.png"/>
     <div class="sidebarOption">
       <a href="http://localhost/project_social_php/public/index.php?controller=HomeController&action=index"
         class="sidebarLink">

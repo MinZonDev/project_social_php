@@ -74,6 +74,6 @@ class UserController
             echo "Failed to unfollow user.";
         }
     }
-
+//fix loi search
 }
 ?>

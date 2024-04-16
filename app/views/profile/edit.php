@@ -4,8 +4,7 @@
 
     <h2 class="edit-heading">Edit Profile</h2>
     <form class="edit-form" action="index.php?controller=ProfileController&action=update" method="POST" enctype="multipart/form-data">
-        <label class="edit-label" for="username">Username:</label><br>
-        <input class="edit-input" type="text" id="username" name="username" value="<?php echo $data['username']; ?>"><br><br>
+        
 
         <label class="edit-label" for="email">Email:</label><br>
         <input class="edit-input" type="email" id="email" name="email" value="<?php echo $data['email']; ?>"><br><br>

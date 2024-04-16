@@ -134,6 +134,48 @@ class Tweet
         $this->db->execute();
     }
 
+    public function addComment($userId, $tweetId, $content)
+    {
+        $this->db->query('INSERT INTO comments (UserID, TweetID, Content) VALUES (:user_id, :tweet_id, :content)');
+        $this->db->bind(':user_id', $userId);
+        $this->db->bind(':tweet_id', $tweetId);
+        $this->db->bind(':content', $content);
+        $this->db->execute();
+    }
+
+    public function getCommentsByTweetId($tweetId)
+    {
+        $this->db->query('SELECT * FROM comments WHERE TweetID = :tweet_id');
+        $this->db->bind(':tweet_id', $tweetId);
+        return $this->db->resultSet();
+    }
+    public function getCommentById($commentId)
+    {
+        // Assuming you have a method in your Tweet model to retrieve a comment by its ID
+        $tweetModel = new Tweet();
+        $comment = $tweetModel->getCommentById($commentId);
+
+        // Do something with the retrieved comment, like returning it or rendering a view
+        return $comment;
+    }
+
+
+    public function deleteComment($commentId)
+    {
+        $this->db->query('DELETE FROM comments WHERE CommentID = :comment_id');
+        $this->db->bind(':comment_id', $commentId);
+        $this->db->execute();
+    }
+    public function getCommentsWithUserInfoByTweetId($tweetId)
+    {
+        $this->db->query('SELECT comments.*, users.Username, users.Avatar 
+                      FROM comments 
+                      JOIN users ON comments.UserID = users.UserID 
+                      WHERE comments.TweetID = :tweet_id 
+                      ORDER BY comments.Timestamp ASC');
+        $this->db->bind(':tweet_id', $tweetId);
+        return $this->db->resultSet();
+    }
 
 
 }

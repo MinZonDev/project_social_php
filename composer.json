@@ -1,5 +1,6 @@
 {
     "require": {
-        "swiftmailer/swiftmailer": "^6.3"
+        "swiftmailer/swiftmailer": "^6.3",
+        "cboden/ratchet": "^0.4.4"
     }
 }

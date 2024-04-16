@@ -82,6 +82,7 @@ class TweetController
 
         require_once '../app/views/tweet/index.php';
     }
+    
 
     public function likeTweet()
     {
@@ -150,6 +151,48 @@ class TweetController
                 }
             }
         }
+    }
+    public function addComment() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['user_id'])) {
+                http_response_code(401);
+                exit;
+            }
+            $userId = $_SESSION['user_id'];
+            $tweetId = $_POST['tweet_id'];
+            $content = $_POST['content'];
+
+            $tweetModel = new Tweet();
+            $tweetModel->addComment($userId, $tweetId, $content);
+            http_response_code(200);
+            exit;
+        }
+        http_response_code(400);
+        exit;
+    }
+
+    public function deleteComment() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['user_id'])) {
+                http_response_code(401);
+                exit;
+            }
+            $userId = $_SESSION['user_id'];
+            $commentId = $_POST['comment_id'];
+
+            $tweetModel = new Tweet();
+            $comment = $tweetModel->getCommentById($commentId);
+            if (!$comment || $comment['UserID'] !== $userId) {
+                http_response_code(403);
+                exit;
+            }
+
+            $tweetModel->deleteComment($commentId);
+            http_response_code(200);
+            exit;
+        }
+        http_response_code(400);
+        exit;
     }
 
 }

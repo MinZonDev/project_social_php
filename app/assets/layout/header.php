@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chirp</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- <link rel="stylesheet" href="../app/assets/css/styles.css" /> -->
   <style>
     * {
@@ -517,6 +518,36 @@
     .edit-form input[type="submit"]:hover {
       background-color: #0056b3;
     }
+
+    #name-input,
+    #chat-box {
+      width: 300px;
+      margin: 0 auto;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    #chat-messages {
+      height: 200px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    #chat-messages div {
+      margin-bottom: 10px;
+    }
+
+    #message-input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 5px;
+    }
+
+    #send-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
   </style>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -527,7 +558,7 @@
 <body>
   <!-- sidebar starts -->
   <div class="sidebar">
-    <img href="app/assets/images/logo_chirp.png"/>
+    <img href="app/assets/images/logo_chirp.png" />
     <div class="sidebarOption">
       <a href="http://localhost/project_social_php/public/index.php?controller=HomeController&action=index"
         class="sidebarLink">
@@ -550,8 +581,11 @@
     </div>
 
     <div class="sidebarOption">
-      <span class="material-icons"> mail_outline </span>
-      <h2>Messages</h2>
+      <a href="http://localhost/project_social_php/public/index.php?controller=ChatController&action=index"
+        class="sidebarLink">
+        <span class="material-icons"> mail_outline </span>
+        <h2>Messages</h2>
+      </a>
     </div>
 
     <div class="sidebarOption">

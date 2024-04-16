@@ -17,31 +17,54 @@
         <?php if (!empty($tweets)): ?>
             <?php foreach ($tweets as $tweet): ?>
                 <div class="post">
-                    <!-- Existing code for displaying tweet content -->
+                    <div class="post__avatar">
+                        <img src="../app/assets/images/<?php echo isset($tweet['Avatar']) ? $tweet['Avatar'] : 'avatar.jpg'; ?>"
+                            alt="" />
+                    </div>
 
-                    <!-- Display comments -->
-                    <div class="comments">
-                        <?php if (isset($tweet['Comments']) && is_array($tweet['Comments']) && !empty($tweet['Comments'])): ?>
-                            <?php foreach ($tweet['Comments'] as $comment): ?>
-                                <div class="comment">
-                                    <div class="comment__avatar">
-                                        <img src="../app/assets/images/<?php echo isset($comment['Avatar']) ? $comment['Avatar'] : 'avatar.jpg'; ?>"
-                                            alt="" />
-                                    </div>
-                                    <div class="comment__body">
-                                        <div class="comment__header">
-                                            <span class="comment__username"><?php echo $comment['Username']; ?></span>
-                                            <span class="comment__timestamp"><?php echo $comment['Timestamp']; ?></span>
-                                        </div>
-                                        <div class="comment__content">
-                                            <p><?php echo $comment['Content']; ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No comments yet.</p>
-                        <?php endif; ?>
+                    <div class="post__body">
+                        <div class="post__header">
+                            <div class="post__headerText">
+                                <h3>
+                                    <?php echo isset($tweet['Username']) ? $tweet['Username'] : ''; ?>
+                                </h3>
+                            </div>
+                            <div class="post__date">
+                                <p><?php echo isset($tweet['Timestamp']) ? $tweet['Timestamp'] : ''; ?></p>
+                            </div>
+                        </div>
+                        <div class="post__headerDescription">
+                            <p><?php echo isset($tweet['Content']) ? $tweet['Content'] : ''; ?></p>
+                        </div>
+                        <img src="../app/assets/images/<?php echo isset($tweet['ImageURL']) ? $tweet['ImageURL'] : ''; ?>"
+                            alt="" />
+                        <div class="post__footer">
+                            <!-- Nút sửa và xóa -->
+                            <?php if ($tweet['UserID'] === $_SESSION['user_id']): ?>
+                                <button class="material-icons" onclick="editTweet(<?php echo $tweet['TweetID']; ?>)"> edit </button>
+                                <button class="material-icons" onclick="deleteTweet(<?php echo $tweet['TweetID']; ?>)"> delete
+                                </button>
+                            <?php endif; ?>
+                            <!-- Nút like và số lượt like -->
+                            <?php if ($tweetModel->isTweetLiked($tweet['TweetID'], $_SESSION['user_id'])): ?>
+                                <button id="likeButton-<?php echo $tweet['TweetID']; ?>" class="material-icons"
+                                    onclick="unlikeTweet(<?php echo $tweet['TweetID']; ?>)"> favorite </button>
+                            <?php else: ?>
+                                <button id="likeButton-<?php echo $tweet['TweetID']; ?>" class="material-icons"
+                                    onclick="likeTweet(<?php echo $tweet['TweetID']; ?>)"> favorite_border </button>
+                            <?php endif; ?>
+                            <span class="material-icons"> publish </span>
+                            <span id="likeCount-<?php echo $tweet['TweetID']; ?>"><?php echo $tweet['LikeCount']; ?>
+                                Likes</span>
+                        </div>
+                        <!-- Form chỉnh sửa bài viết -->
+                        <form id="editTweetForm-<?php echo $tweet['TweetID']; ?>" class="edit-tweet-form"
+                            style="display: none;">
+                            <textarea id="editTweetContent-<?php echo $tweet['TweetID']; ?>" rows="4"
+                                cols="50"><?php echo $tweet['Content']; ?></textarea>
+                            <br>
+                            <button type="button" onclick="saveEditedTweet(<?php echo $tweet['TweetID']; ?>)">Save</button>
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -50,8 +73,14 @@
         <?php endif; ?>
     </div>
 </div>
-
+<!-- Thêm mã JavaScript -->
 <script>
+    function confirmUnfollow(userId) {
+        var result = confirm("Are you sure you want to unfollow this user?");
+        if (result) {
+            window.location.href = 'index.php?controller=ProfileController&action=unfollow&userId=' + userId + '&confirm=true';
+        }
+    }
     function editTweet(tweetId) {
         // Ẩn nội dung bài viết và hiển thị form chỉnh sửa
         document.getElementById('editTweetForm-' + tweetId).style.display = 'block';
